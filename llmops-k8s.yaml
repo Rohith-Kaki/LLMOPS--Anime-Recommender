@@ -4,10 +4,10 @@ metadata:
   name: llmops-app
   labels:
     app: llmops
-spec: 
+spec:
   replicas: 1
   selector:
-    matchLables:
+    matchLabels:
       app: llmops
   template:
     metadata:
@@ -16,25 +16,24 @@ spec:
     spec:
       containers:
       - name: llmops-container
-        image: llmops-app:latest
+        image: llmops-app:latest  # Use local image
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 8501
         envFrom:
           - secretRef:
-            name: llmops-secrets
+              name: llmops-secrets 
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: llmops-Service
-spec: 
+  name: llmops-service
+spec:
   type: LoadBalancer
   selector:
     app: llmops
   ports:
-    - portocol: TCP
+    - protocol: TCP
       port: 80
       targetPort: 8501
